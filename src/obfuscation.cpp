@@ -371,9 +371,9 @@ void CObfuscationPool::ChargeRandomFees()
 
                 Being that Obfuscation has "no fees" we need to have some kind of cost associated
                 with using it to stop abuse. Otherwise it could serve as an attack vector and
-                allow endless transaction that would bloat PIVX and make it unusable. To
+                allow endless transaction that would bloat STAKECUBE and make it unusable. To
                 stop these kinds of attacks 1 in 10 successful transactions are charged. This
-                adds up to a cost of 0.001 PIV per transaction on average.
+                adds up to a cost of 0.001 SCC per transaction on average.
             */
             if (r <= 10) {
                 LogPrintf("CObfuscationPool::ChargeRandomFees -- charging random fees. %u\n", i);
@@ -533,7 +533,7 @@ bool CObfuScationSigner::IsVinAssociatedWithPubkey(CTxIn& vin, CPubKey& pubkey)
     uint256 hash;
     if (GetTransaction(vin.prevout.hash, txVin, hash, true)) {
         for (CTxOut out : txVin.vout) {
-            if (out.nValue == 10000 * COIN) {
+            if (out.nValue == Params().MasternodeCollateralLimit() * COIN) {
                 if (out.scriptPubKey == payee2) return true;
             }
         }
@@ -606,8 +606,8 @@ bool CObfuscationQueue::Sign()
 {
     if (!fMasterNode) return false;
 
-    std::string strMessage = vin.ToString() + std::to_string(nDenom) + std::to_string(time) + std::to_string(ready);
-
+    std::string strMessage = vin.ToString() + boost::lexical_cast<std::string>(nDenom) + boost::lexical_cast<std::string>(time) + boost::lexical_cast<std::string>(ready);
+	
     CKey key2;
     CPubKey pubkey2;
     std::string errorMessage = "";
@@ -669,7 +669,7 @@ void ThreadCheckObfuScationPool()
     if (fLiteMode) return; //disable all Obfuscation/Masternode related functionality
 
     // Make this thread recognisable as the wallet flushing thread
-    RenameThread("pivx-obfuscation");
+    RenameThread("stakecube-obfuscation");
 
     unsigned int c = 0;
 

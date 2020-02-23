@@ -28,7 +28,7 @@ void ProcessMessageMasternodePayments(CNode* pfrom, std::string& strCommand, CDa
 bool IsBlockPayeeValid(const CBlock& block, int nBlockHeight);
 std::string GetRequiredPaymentsString(int nBlockHeight);
 bool IsBlockValueValid(const CBlock& block, CAmount nExpectedValue, CAmount nMinted);
-void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, bool fProofOfStake, bool fZPIVStake);
+void FillBlockPayee(CMutableTransaction& txNew, CAmount nFees, bool fProofOfStake, bool fZSCCStake);
 
 void DumpMasternodePayments();
 
@@ -216,9 +216,9 @@ public:
     {
         std::string ret = "";
         ret += vinMasternode.ToString();
-        ret += ", " + std::to_string(nBlockHeight);
+        ret += ", " + boost::lexical_cast<std::string>(nBlockHeight);
         ret += ", " + payee.ToString();
-        ret += ", " + std::to_string((int)vchSig.size());
+        ret += ", " + boost::lexical_cast<std::string>((int)vchSig.size());
         return ret;
     }
 };
@@ -281,7 +281,7 @@ public:
     int GetMinMasternodePaymentsProto();
     void ProcessMessageMasternodePayments(CNode* pfrom, std::string& strCommand, CDataStream& vRecv);
     std::string GetRequiredPaymentsString(int nBlockHeight);
-    void FillBlockPayee(CMutableTransaction& txNew, int64_t nFees, bool fProofOfStake, bool fZPIVStake);
+    void FillBlockPayee(CMutableTransaction& txNew, int64_t nFees, bool fProofOfStake, bool fZSCCStake);
     std::string ToString() const;
     int GetOldestBlock();
     int GetNewestBlock();

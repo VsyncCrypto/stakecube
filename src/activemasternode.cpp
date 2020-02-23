@@ -12,7 +12,7 @@
 #include "spork.h"
 
 //
-// Bootup the Masternode, look for a 10000 PIVX input and register on the network
+// Bootup the Masternode, look for a 1000 STAKECUBE input and register on the network
 //
 void CActiveMasternode::ManageStatus()
 {
@@ -295,6 +295,21 @@ bool CActiveMasternode::CreateBroadcast(CTxIn vin, CService service, CKey keyCol
         return false;
     }
 
+mnodeman.mapSeenMasternodeBroadcast.insert(std::make_pair(mnb.GetHash(), mnb));
+    masternodeSync.AddedMasternodeList(mnb.GetHash());
+
+    CMasternode* pmn = mnodeman.Find(vin);
+    if (pmn == NULL) {
+        CMasternode mn(mnb);
+        mnodeman.Add(mn);
+    } else {
+        pmn->UpdateFromNewBroadcast(mnb);
+    }
+
+    //send to all peers
+    LogPrintf("CActiveMasternode::Register() - RelayElectionEntry vin = %s\n", vin.ToString());
+    mnb.Relay();
+
     /*
      * IT'S SAFE TO REMOVE THIS IN FURTHER VERSIONS
      * AFTER MIGRATION TO V12 IS DONE
@@ -311,7 +326,7 @@ bool CActiveMasternode::CreateBroadcast(CTxIn vin, CService service, CKey keyCol
     std::string vchPubKey(pubKeyCollateralAddress.begin(), pubKeyCollateralAddress.end());
     std::string vchPubKey2(pubKeyMasternode.begin(), pubKeyMasternode.end());
 
-    std::string strMessage = service.ToString() + std::to_string(masterNodeSignatureTime) + vchPubKey + vchPubKey2 + std::to_string(PROTOCOL_VERSION) + donationAddress + std::to_string(donationPercantage);
+    std::string strMessage = service.ToString() + boost::lexical_cast<std::string>(masterNodeSignatureTime) + vchPubKey + vchPubKey2 + boost::lexical_cast<std::string>(PROTOCOL_VERSION) + donationAddress + boost::lexical_cast<std::string>(donationPercantage);
 
     if (!obfuScationSigner.SignMessage(strMessage, retErrorMessage, vchMasterNodeSignature, keyCollateralAddress)) {
         errorMessage = "dsee sign message failed: " + retErrorMessage;
@@ -456,7 +471,7 @@ std::vector<COutput> CActiveMasternode::SelectCoinsMasternode()
 
     // Filter
     for (const COutput& out : vCoins) {
-        if (out.tx->vout[out.i].nValue == 10000 * COIN) { //exactly
+        if (out.tx->vout[out.i].nValue == Params().MasternodeCollateralLimit() * COIN) { //exactly
             filteredCoins.push_back(out);
         }
     }

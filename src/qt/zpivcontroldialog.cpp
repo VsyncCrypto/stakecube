@@ -2,28 +2,28 @@
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#include "zpivcontroldialog.h"
-#include "ui_zpivcontroldialog.h"
+#include "zscccontroldialog.h"
+#include "ui_zscccontroldialog.h"
 
-#include "zpiv/accumulators.h"
+#include "zscc/accumulators.h"
 #include "main.h"
 #include "walletmodel.h"
 
 
-std::set<std::string> ZPivControlDialog::setSelectedMints;
-std::set<CMintMeta> ZPivControlDialog::setMints;
+std::set<std::string> ZSccControlDialog::setSelectedMints;
+std::set<CMintMeta> ZSccControlDialog::setMints;
 
-bool CZPivControlWidgetItem::operator<(const QTreeWidgetItem &other) const {
+bool CZSccControlWidgetItem::operator<(const QTreeWidgetItem &other) const {
     int column = treeWidget()->sortColumn();
-    if (column == ZPivControlDialog::COLUMN_DENOMINATION || column == ZPivControlDialog::COLUMN_VERSION || column == ZPivControlDialog::COLUMN_CONFIRMATIONS)
+    if (column == ZSccControlDialog::COLUMN_DENOMINATION || column == ZSccControlDialog::COLUMN_VERSION || column == ZSccControlDialog::COLUMN_CONFIRMATIONS)
         return data(column, Qt::UserRole).toLongLong() < other.data(column, Qt::UserRole).toLongLong();
     return QTreeWidgetItem::operator<(other);
 }
 
 
-ZPivControlDialog::ZPivControlDialog(QWidget *parent) :
+ZSccControlDialog::ZSccControlDialog(QWidget *parent) :
     QDialog(parent, Qt::WindowSystemMenuHint | Qt::WindowTitleHint | Qt::WindowCloseButtonHint),
-    ui(new Ui::ZPivControlDialog),
+    ui(new Ui::ZSccControlDialog),
     model(0)
 {
     ui->setupUi(this);
@@ -37,12 +37,12 @@ ZPivControlDialog::ZPivControlDialog(QWidget *parent) :
     connect(ui->pushButtonAll, SIGNAL(clicked()), this, SLOT(ButtonAllClicked()));
 }
 
-ZPivControlDialog::~ZPivControlDialog()
+ZSccControlDialog::~ZSccControlDialog()
 {
     delete ui;
 }
 
-void ZPivControlDialog::setModel(WalletModel *model)
+void ZSccControlDialog::setModel(WalletModel *model)
 {
     this->model = model;
     updateList();
@@ -50,7 +50,7 @@ void ZPivControlDialog::setModel(WalletModel *model)
 
 
 //Update the tree widget
-void ZPivControlDialog::updateList()
+void ZSccControlDialog::updateList()
 {
     // need to prevent the slot from being called each time something is changed
     ui->treeWidget->blockSignals(true);
@@ -60,7 +60,7 @@ void ZPivControlDialog::updateList()
     QFlags<Qt::ItemFlag> flgTristate = Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
     std::map<libzerocoin::CoinDenomination, int> mapDenomPosition;
     for (auto denom : libzerocoin::zerocoinDenomList) {
-        CZPivControlWidgetItem* itemDenom(new CZPivControlWidgetItem);
+        CZSccControlWidgetItem* itemDenom(new CZSccControlWidgetItem);
         ui->treeWidget->addTopLevelItem(itemDenom);
 
         //keep track of where this is positioned in tree widget
@@ -82,7 +82,7 @@ void ZPivControlDialog::updateList()
     for (const CMintMeta& mint : setMints) {
         // assign this mint to the correct denomination in the tree view
         libzerocoin::CoinDenomination denom = mint.denom;
-        CZPivControlWidgetItem *itemMint = new CZPivControlWidgetItem(ui->treeWidget->topLevelItem(mapDenomPosition.at(denom)));
+        CZSccControlWidgetItem *itemMint = new CZSccControlWidgetItem(ui->treeWidget->topLevelItem(mapDenomPosition.at(denom)));
 
         // if the mint is already selected, then it needs to have the checkbox checked
         std::string strPubCoinHash = mint.hashPubcoin.GetHex();
@@ -108,9 +108,9 @@ void ZPivControlDialog::updateList()
         itemMint->setData(COLUMN_CONFIRMATIONS, Qt::UserRole, QVariant((qlonglong) nConfirmations));
 
         {
-            LOCK(pwalletMain->zpivTracker->cs_spendcache);
+            LOCK(pwalletMain->zsccTracker->cs_spendcache);
 
-            CoinWitnessData *witnessData = pwalletMain->zpivTracker->GetSpendCache(mint.hashStake);
+            CoinWitnessData *witnessData = pwalletMain->zsccTracker->GetSpendCache(mint.hashStake);
             if (witnessData->nHeightAccStart > 0  && witnessData->nHeightAccEnd > 0) {
                 int nPercent = std::max(0, std::min(100, (int)((double)(witnessData->nHeightAccEnd - witnessData->nHeightAccStart) / (double)(nBestHeight - witnessData->nHeightAccStart - 220) * 100)));
                 QString percent = QString::number(nPercent) + QString("%");
@@ -140,9 +140,9 @@ void ZPivControlDialog::updateList()
             if(nConfirmations < Params().Zerocoin_MintRequiredConfirmations())
                 strReason = strprintf("Needs %d more confirmations", Params().Zerocoin_MintRequiredConfirmations() - nConfirmations);
             else if (model->getEncryptionStatus() == WalletModel::EncryptionStatus::Locked)
-                strReason = "Your wallet is locked. Impossible to precompute or spend zPIV.";
+                strReason = "Your wallet is locked. Impossible to precompute or spend zSCC.";
             else if (!mint.isSeedCorrect)
-                strReason = "The zPIV seed used to mint this zPIV is not the same as currently hold in the wallet";
+                strReason = "The zSCC seed used to mint this zSCC is not the same as currently hold in the wallet";
             else
                 strReason = strprintf("Needs %d more mints added to network", Params().Zerocoin_RequiredAccumulation());
 
@@ -157,7 +157,7 @@ void ZPivControlDialog::updateList()
 }
 
 // Update the list when a checkbox is clicked
-void ZPivControlDialog::updateSelection(QTreeWidgetItem* item, int column)
+void ZSccControlDialog::updateSelection(QTreeWidgetItem* item, int column)
 {
     // only want updates from non top level items that are available to spend
     if (item->parent() && column == COLUMN_CHECKBOX && !item->isDisabled()){
@@ -179,7 +179,7 @@ void ZPivControlDialog::updateSelection(QTreeWidgetItem* item, int column)
 }
 
 // Update the Quantity and Amount display
-void ZPivControlDialog::updateLabels()
+void ZSccControlDialog::updateLabels()
 {
     int64_t nAmount = 0;
     for (const CMintMeta& mint : setMints) {
@@ -188,14 +188,14 @@ void ZPivControlDialog::updateLabels()
     }
 
     //update this dialog's labels
-    ui->labelZPiv_int->setText(QString::number(nAmount));
+    ui->labelZScc_int->setText(QString::number(nAmount));
     ui->labelQuantity_int->setText(QString::number(setSelectedMints.size()));
 
     //update PrivacyDialog labels
-    privacyDialog->setZPivControlLabels(nAmount, setSelectedMints.size());
+    privacyDialog->setZSccControlLabels(nAmount, setSelectedMints.size());
 }
 
-std::vector<CMintMeta> ZPivControlDialog::GetSelectedMints()
+std::vector<CMintMeta> ZSccControlDialog::GetSelectedMints()
 {
     std::vector<CMintMeta> listReturn;
     for (const CMintMeta& mint : setMints) {
@@ -207,7 +207,7 @@ std::vector<CMintMeta> ZPivControlDialog::GetSelectedMints()
 }
 
 // select or deselect all of the mints
-void ZPivControlDialog::ButtonAllClicked()
+void ZSccControlDialog::ButtonAllClicked()
 {
     ui->treeWidget->blockSignals(true);
     Qt::CheckState state = Qt::Checked;

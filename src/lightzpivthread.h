@@ -3,12 +3,12 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 //
 
-#ifndef PIVX_LIGHTZPIVTHREAD_H
-#define PIVX_LIGHTZPIVTHREAD_H
+#ifndef STAKECUBE_LIGHTZSCCTHREAD_H
+#define STAKECUBE_LIGHTZSCCTHREAD_H
 
 #include <atomic>
 #include "genwit.h"
-#include "zpiv/accumulators.h"
+#include "zscc/accumulators.h"
 #include "concurrentqueue.h"
 #include "chainparams.h"
 #include <boost/function.hpp>
@@ -42,29 +42,29 @@ public:
 
     bool addWitWork(CGenWit wit) {
         if (!isWorkerRunning) {
-            LogPrintf("%s not running trying to add wit work \n", "pivx-light-thread");
+            LogPrintf("%s not running trying to add wit work \n", "stakecube-light-thread");
             return false;
         }
         requestsQueue.push(wit);
         return true;
     }
 
-    void StartLightZpivThread(boost::thread_group& threadGroup) {
-        LogPrintf("%s thread start\n", "pivx-light-thread");
-        threadIns = boost::thread(boost::bind(&CLightWorker::ThreadLightZPIVSimplified, this));
+    void StartLightZsccThread(boost::thread_group& threadGroup) {
+        LogPrintf("%s thread start\n", "stakecube-light-thread");
+        threadIns = boost::thread(boost::bind(&CLightWorker::ThreadLightZSCCSimplified, this));
     }
 
-    void StopLightZpivThread() {
+    void StopLightZsccThread() {
         threadIns.interrupt();
-        LogPrintf("%s thread interrupted\n", "pivx-light-thread");
+        LogPrintf("%s thread interrupted\n", "stakecube-light-thread");
     }
 
 private:
 
-    void ThreadLightZPIVSimplified();
+    void ThreadLightZSCCSimplified();
 
     void rejectWork(CGenWit& wit, int blockHeight, uint32_t errorNumber);
 
 };
 
-#endif //PIVX_LIGHTZPIVTHREAD_H
+#endif //STAKECUBE_LIGHTZSCCTHREAD_H

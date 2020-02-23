@@ -26,7 +26,7 @@ struct CDNSSeedData {
 
 /**
  * CChainParams defines various tweakable parameters of a given instance of the
- * PIVX system. There are three: the main network on which people trade goods
+ * STAKECUBE system. There are three: the main network on which people trade goods
  * and services, the public test network which gets reset from time to time and
  * a regression test mode which is intended for private networks only. It has
  * minimal difficulty to ensure that blocks can be found instantly.
@@ -72,6 +72,7 @@ public:
     bool SkipProofOfWorkCheck() const { return fSkipProofOfWorkCheck; }
     /** Make standard checks */
     bool RequireStandard() const { return fRequireStandard; }
+    int64_t TargetTimespan() const { return nTargetTimespan; }
     int64_t TargetSpacing() const { return nTargetSpacing; }
 
     /** returns the coinbase maturity **/
@@ -88,6 +89,7 @@ public:
     CAmount MaxMoneyOut() const { return nMaxMoneyOut; }
     /** The masternode count that we will allow the see-saw reward payments to be off by */
     int MasternodeCountDrift() const { return nMasternodeCountDrift; }
+    int MasternodeCollateralLimit() const { return nMasternodeCollateralLimit; }
     /** Make miner stop after a block is found. In RPC, don't return until nGenProcLimit blocks are generated */
     bool MineBlocksOnDemand() const { return fMineBlocksOnDemand; }
     /** In the future use NetworkIDString() for RPC fields */
@@ -129,8 +131,8 @@ public:
     /** Height or Time Based Activations **/
     int ModifierUpgradeBlock() const { return nModifierUpdateBlock; }
     int LAST_POW_BLOCK() const { return nLastPOWBlock; }
-    int PivxBadBlockTime() const { return nPivxBadBlockTime; }
-    int PivxBadBlocknBits() const { return nPivxBadBlocknBits; }
+    int StakecubeBadBlockTime() const { return nStakecubeBadBlockTime; }
+    int StakecubeBadBlocknBits() const { return nStakecubeBadBlocknBits; }
     int Zerocoin_StartHeight() const { return nZerocoinStartHeight; }
     int Zerocoin_Block_EnforceSerialRange() const { return nBlockEnforceSerialRange; }
     int Zerocoin_Block_RecalculateAccumulators() const { return nBlockRecalculateAccumulators; }
@@ -164,11 +166,13 @@ protected:
     int nEnforceBlockUpgradeMajority;
     int nRejectBlockOutdatedMajority;
     int nToCheckBlockUpgradeMajority;
+    int64_t nTargetTimespan;
     int64_t nTargetSpacing;
     int nLastPOWBlock;
-    int64_t nPivxBadBlockTime;
-    unsigned int nPivxBadBlocknBits;
+    int64_t nStakecubeBadBlockTime;
+    unsigned int nStakecubeBadBlocknBits;
     int nMasternodeCountDrift;
+    int nMasternodeCollateralLimit;
     int nMaturity;
     int nStakeMinDepth;
     int nFutureTimeDriftPoW;

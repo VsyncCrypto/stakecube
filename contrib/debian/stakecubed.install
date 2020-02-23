@@ -1,0 +1,3 @@
+usr/local/bin/stakecubed usr/bin
+usr/local/bin/stakecube-cli usr/bin
+debian/examples/stakecube.conf etc/stakecube

@@ -1,0 +1,81 @@
+policy_module(stakecube, 1.100.1)
+
+########################################
+#
+# Declarations
+#
+
+type stakecube_t;
+type stakecube_exec_t;
+init_daemon_domain(stakecube_t, stakecube_exec_t)
+
+permissive stakecube_t;
+
+type stakecube_initrc_exec_t;
+init_script_file(stakecube_initrc_exec_t)
+
+type stakecube_conf_t;
+files_type(stakecube_conf_t)
+
+type stakecube_var_lib_t;
+files_type(stakecube_var_lib_t)
+
+type stakecube_var_run_t;
+files_type(stakecube_var_run_t)
+
+type stakecube_port_t;
+corenet_port(stakecube_port_t)
+
+########################################
+#
+# stakecube local policy
+#
+allow stakecube_t self:process { fork };
+
+allow stakecube_t self:fifo_file rw_fifo_file_perms;
+allow stakecube_t self:unix_stream_socket create_stream_socket_perms;
+
+manage_dirs_pattern(stakecube_t, stakecube_conf_t, stakecube_conf_t)
+manage_files_pattern(stakecube_t, stakecube_conf_t, stakecube_conf_t)
+
+manage_dirs_pattern(stakecube_t, stakecube_var_lib_t, stakecube_var_lib_t)
+manage_files_pattern(stakecube_t, stakecube_var_lib_t, stakecube_var_lib_t)
+files_var_lib_filetrans(stakecube_t, stakecube_var_lib_t, { dir file })
+
+manage_dirs_pattern(stakecube_t, stakecube_var_run_t, stakecube_var_run_t)
+manage_files_pattern(stakecube_t, stakecube_var_run_t, stakecube_var_run_t)
+
+sysnet_dns_name_resolve(stakecube_t)
+corenet_all_recvfrom_unlabeled(stakecube_t)
+
+allow stakecube_t self:tcp_socket create_stream_socket_perms;
+corenet_tcp_sendrecv_generic_if(stakecube_t)
+corenet_tcp_sendrecv_generic_node(stakecube_t)
+corenet_tcp_sendrecv_all_ports(stakecube_t)
+corenet_tcp_bind_generic_node(stakecube_t)
+
+gen_require(`
+    type stakecube_port_t;
+')
+allow stakecube_t stakecube_port_t:tcp_socket name_bind;
+
+gen_require(`
+    type stakecube_port_t;
+')
+allow stakecube_t stakecube_port_t:tcp_socket name_connect;
+
+domain_use_interactive_fds(stakecube_t)
+
+files_read_etc_files(stakecube_t)
+
+miscfiles_read_localization(stakecube_t)
+
+sysnet_dns_name_resolve(stakecube_t)
+
+allow stakecube_t stakecube_exec_t:file execute_no_trans;
+allow stakecube_t self:process setsched;
+corecmd_exec_ls(stakecube_t)
+corenet_tcp_connect_http_port(stakecube_t)
+dev_read_urand(stakecube_t)
+fs_getattr_xattr_fs(stakecube_t)
+kernel_read_system_state(stakecube_t)

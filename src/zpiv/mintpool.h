@@ -2,13 +2,13 @@
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef PIVX_MINTPOOL_H
-#define PIVX_MINTPOOL_H
+#ifndef STAKECUBE_MINTPOOL_H
+#define STAKECUBE_MINTPOOL_H
 
 #include <map>
 #include <list>
 
-#include "zpiv/zerocoin.h"
+#include "zscc/zerocoin.h"
 #include "libzerocoin/bignum.h"
 #include "uint256.h"
 
@@ -50,4 +50,4 @@ public:
 };
 
 
-#endif //PIVX_MINTPOOL_H
+#endif //STAKECUBE_MINTPOOL_H

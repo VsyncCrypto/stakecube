@@ -1,0 +1,6 @@
+usr/local/bin/stakecube-qt usr/bin
+share/pixmaps/stakecube32.xpm usr/share/pixmaps
+share/pixmaps/stakecube16.xpm usr/share/pixmaps
+share/pixmaps/stakecube128.png usr/share/pixmaps
+debian/stakecube-qt.desktop usr/share/applications
+debian/stakecube-qt.protocol usr/share/kde4/services/
