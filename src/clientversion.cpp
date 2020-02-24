@@ -13,7 +13,7 @@
  * for both stakecubed and stakecube-qt, to make it harder for attackers to
  * target servers or GUI users specifically.
  */
-const std::string CLIENT_NAME("STAKECUBE Core");
+const std::string CLIENT_NAME("Stakecube Core");
 
 /**
  * Client version number

@@ -1,7 +1,7 @@
-Contributing to STAKECUBE Core
+Contributing to Stakecube Core
 ============================
 
-The STAKECUBE Core project operates an open contributor model where anyone is
+The Stakecube Core project operates an open contributor model where anyone is
 welcome to contribute towards development in the form of peer review, testing
 and patches. This document explains the practical process and guidelines for
 contributing.
@@ -203,10 +203,10 @@ workload on reviewing.
 "Decision Making" Process
 -------------------------
 
-The following applies to code changes to the STAKECUBE Core project, and is not to be
+The following applies to code changes to the Stakecube Core project, and is not to be
 confused with overall STAKECUBE Network Protocol consensus changes.
 
-Whether a pull request is merged into STAKECUBE Core rests with the project merge
+Whether a pull request is merged into Stakecube Core rests with the project merge
 maintainers and ultimately the project lead.
 
 Maintainers will take into consideration if a patch is in line with the general
@@ -303,7 +303,7 @@ about:
 Release Policy
 --------------
 
-The project leader is the release manager for each STAKECUBE Core release.
+The project leader is the release manager for each Stakecube Core release.
 
 Copyright
 ---------

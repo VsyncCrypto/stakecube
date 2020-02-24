@@ -38,10 +38,10 @@ from the root of the repository.
 
 **Note**: You only need Berkeley DB if the wallet is enabled (see [*Disable-wallet mode*](/doc/build-osx.md#disable-wallet-mode)).
 
-Build STAKECUBE Core
+Build Stakecube Core
 ------------------------
 
-1. Clone the STAKECUBE Core source code:
+1. Clone the Stakecube Core source code:
 
         git clone https://github.com/stakecube-project/stakecube
         cd stakecube
@@ -51,7 +51,7 @@ Build STAKECUBE Core
         export LDFLAGS+=-L/usr/local/opt/openssl/lib
         export CPPFLAGS+=-I/usr/local/opt/openssl/include
 
-3.  Build STAKECUBE Core:
+3.  Build Stakecube Core:
 
         ./autogen.sh
         ./configure
@@ -69,7 +69,7 @@ Disable-wallet mode
 --------------------
 **Note:** This functionality is not yet completely implemented, and compilation using the below option will currently fail.
 
-When the intention is to run only a P2P node without a wallet, STAKECUBE Core may be compiled in
+When the intention is to run only a P2P node without a wallet, Stakecube Core may be compiled in
 disable-wallet mode with:
 
     ./configure --disable-wallet
@@ -79,7 +79,7 @@ In this case there is no dependency on Berkeley DB 4.8.
 Running
 -------
 
-STAKECUBE Core is now available at `./src/stakecubed`
+Stakecube Core is now available at `./src/stakecubed`
 
 Before running, you may create an empty configuration file:
 
