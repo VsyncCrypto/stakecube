@@ -2949,7 +2949,7 @@ UniValue spendzerocoinmints(const UniValue& params, bool fHelp)
 
     LOCK2(cs_main, pwalletMain->cs_wallet);
 
-    if(GetAdjustedTime() > GetSporkValue(SPORK_16_ZEROCOIN_MAINTENANCE_MODE))
+    if(true)
         throw JSONRPCError(RPC_WALLET_ERROR, "zSCC is currently disabled due to maintenance.");
 
     std::string address_str = "";

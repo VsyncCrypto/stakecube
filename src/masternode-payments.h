@@ -10,6 +10,7 @@
 #include "main.h"
 #include "masternode.h"
 
+#include <boost/lexical_cast.hpp>
 
 extern CCriticalSection cs_vecPayments;
 extern CCriticalSection cs_mapMasternodeBlocks;

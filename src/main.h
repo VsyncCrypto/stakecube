@@ -44,6 +44,7 @@
 #include "lightzsccthread.h"
 
 #include <boost/unordered_map.hpp>
+#include <boost/filesystem/path.hpp>
 
 class CBlockIndex;
 class CBlockTreeDB;
