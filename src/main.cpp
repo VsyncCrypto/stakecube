@@ -5910,7 +5910,8 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
         // STAKECUBE: We use certain sporks during IBD, so check to see if they are
         // available. If not, ask the first peer connected for them.
         bool fMissingSporks = !pSporkDB->SporkExists(SPORK_14_NEW_PROTOCOL_ENFORCEMENT) &&
-                !pSporkDB->SporkExists(SPORK_15_NEW_PROTOCOL_ENFORCEMENT_2);
+                !pSporkDB->SporkExists(SPORK_15_NEW_PROTOCOL_ENFORCEMENT_2) &&
+                !pSporkDB->SporkExists(SPORK_17_NEW_PROTOCOL_ENFORCEMENT_3);
 
         if (fMissingSporks || !fRequestedSporksIDB){
             LogPrintf("asking peer for sporks\n");
@@ -6791,8 +6792,13 @@ bool static ProcessMessage(CNode* pfrom, std::string strCommand, CDataStream& vR
 int ActiveProtocol()
 {
     // SPORK_14 is used for 70917 (v3.4+)
-    if (IsSporkActive(SPORK_14_NEW_PROTOCOL_ENFORCEMENT))
+    if (IsSporkActive(SPORK_17_NEW_PROTOCOL_ENFORCEMENT_3))
             return MIN_PEER_PROTO_VERSION_AFTER_ENFORCEMENT;
+
+
+    // SPORK_14 is used for 70917 (v3.4+)
+    //if (IsSporkActive(SPORK_14_NEW_PROTOCOL_ENFORCEMENT))
+    //        return MIN_PEER_PROTO_VERSION_AFTER_ENFORCEMENT;
 
     // SPORK_15 was used for 70916 (v3.3+), commented out now.
     //if (IsSporkActive(SPORK_15_NEW_PROTOCOL_ENFORCEMENT_2))
