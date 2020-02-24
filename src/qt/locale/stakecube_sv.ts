@@ -1702,7 +1702,7 @@ Are you sure?</source>
     </message>
     <message>
         <source>Not enough balance to create a masternode, 10,000 PIV required.</source>
-        <translation>Inte nog på saldot för att skapa en Masternode, 10000 PIV behövs.</translation>
+        <translation>Inte nog på saldot för att skapa en Masternode, 1000 SCC behövs.</translation>
     </message>
     <message>
         <source>Error creating masternode</source>
@@ -4460,12 +4460,12 @@ Var vänlig kontrollera adressen och försök igen.</translation>
         <translation>Kan ej lokalisera tillräckligt Fördunklingsdenominationerade pengar för denna transaktion.</translation>
     </message>
     <message>
-        <source>Unable to locate enough Obfuscation non-denominated funds for this transaction that are not equal 10000 PIV.</source>
-        <translation>Kan ej lokalisera tillräckligt Fördunkling icke-denominationerade pengar för denna transaktion som inte är 10000 PIV.</translation>
+        <source>Unable to locate enough Obfuscation non-denominated funds for this transaction that are not equal 1000 SCC.</source>
+        <translation>Kan ej lokalisera tillräckligt Fördunkling icke-denominationerade pengar för denna transaktion som inte är 1000 SCC.</translation>
     </message>
     <message>
-        <source>Unable to locate enough funds for this transaction that are not equal 10000 PIV.</source>
-        <translation>Kan inte hitta tillräckligt med pengar för denna transaktion som inte är 10000 PIV.</translation>
+        <source>Unable to locate enough funds for this transaction that are not equal 1000 SCC.</source>
+        <translation>Kan inte hitta tillräckligt med pengar för denna transaktion som inte är 1000 SCC.</translation>
     </message>
     <message>
         <source>Use separate SOCKS5 proxy to reach peers via Tor hidden services (default: %s)</source>
